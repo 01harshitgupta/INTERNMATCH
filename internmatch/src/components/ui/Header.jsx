@@ -124,7 +124,7 @@ const Header = () => {
               <span className="text-lg font-bold text-blue-900">
                 Government of India
               </span>
-              <p className="text-xs text-blue-700">Ministry of Education</p>
+              <p className="text-xs text-blue-700">Ministry of Corporate Affairs</p>
             </div>
           </div>
         </div>

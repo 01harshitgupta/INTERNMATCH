@@ -75,7 +75,7 @@ const InternshipCard = ({ internship, onApply }) => {
   };
 
   return (
-    <article className="bg-card rounded-lg border border-border p-6 shadow-sm hover:shadow-md transition-shadow" tabIndex={0} aria-label={`${internship.role} at ${internship.company}`}>
+    <article className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/30 p-6 shadow-xl hover:shadow-2xl transition-shadow" tabIndex={0} aria-label={`${internship.role} at ${internship.company}`}>
       {/* Header */}
       <header className="flex items-start justify-between mb-4">
         <div className="flex-1">
@@ -97,7 +97,7 @@ const InternshipCard = ({ internship, onApply }) => {
       {/* Details */}
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
         {/* Location */}
-        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
           <Icon name={getLocationTypeIcon(internship.locationType)} size={16} className="text-muted-foreground" aria-hidden="true"/>
           <div>
             <p className="text-sm font-medium text-foreground">{getText('location')}</p>
@@ -147,12 +147,12 @@ const InternshipCard = ({ internship, onApply }) => {
         </p>
         <div className="flex flex-wrap gap-2 mt-2">
           {internship.requiredSkills.slice(0, 6).map((skill, idx) => (
-            <span key={idx} className="px-2 py-1 bg-muted text-muted-foreground text-xs rounded border border-border">
+            <span key={idx} className="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs rounded border border-indigo-100">
               {skill}
             </span>
           ))}
           {internship.requiredSkills.length > 6 && (
-            <span className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">
+            <span className="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded border border-purple-100">
               +{internship.requiredSkills.length - 6} more
             </span>
           )}
@@ -163,7 +163,7 @@ const InternshipCard = ({ internship, onApply }) => {
       <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{internship.description}</p>
 
       {/* Footer */}
-      <footer className="flex items-center justify-between pt-4 border-t border-border">
+      <footer className="flex items-center justify-between pt-4 border-t border-white/30">
         <div className="text-xs text-muted-foreground flex gap-4">
           <span className="flex items-center gap-1">
             <Icon name="Users" size={12} aria-hidden="true" /> {internship.applicants} applied
@@ -179,7 +179,7 @@ const InternshipCard = ({ internship, onApply }) => {
           iconName="ExternalLink"
           iconPosition="right"
           iconSize={14}
-          className="min-h-44"
+          className="min-h-44 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 text-white rounded-xl shadow-lg hover:shadow-xl"
         >
           {getText('applyNow')}
         </Button>

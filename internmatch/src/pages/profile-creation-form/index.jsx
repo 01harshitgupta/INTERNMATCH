@@ -117,17 +117,17 @@ const ProfileCreationFormContent = () => {
   const isFormValid = completedCount === 4;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       <title>{currentTranslations.pageTitle}</title>
       <Header />
       <ProgressIndicator />
-      <main className="pt-32 pb-16" aria-label="Profile creation form">
-        <div className="max-w-4xl mx-auto px-4 md:px-6">
+      <main className="pt-20 sm:pt-24 pb-8 sm:pb-16" aria-label="Profile creation form">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb />
           <FormHeader />
 
-          <div className="bg-card border border-border rounded-lg shadow-soft p-6 md:p-8">
-            <form onSubmit={e => e.preventDefault()} className="space-y-8" noValidate>
+          <div className="bg-white/95 backdrop-blur-sm border border-white/20 rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
+            <form onSubmit={e => e.preventDefault()} className="space-y-6 sm:space-y-8" noValidate>
               <div data-error={!!errors.education}>
                 <EducationSelector
                   value={formData.education}
@@ -165,16 +165,16 @@ const ProfileCreationFormContent = () => {
           </div>
 
           {/* Progress Summary */}
-          <div className="mt-8 text-center">
+          <div className="mt-6 sm:mt-8 text-center">
             <div
-              className="inline-flex items-center space-x-2 text-sm text-muted-foreground bg-muted/50 px-4 py-2 rounded-full"
+              className="inline-flex items-center space-x-2 text-sm text-gray-600 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-full shadow-lg border border-white/20"
               aria-label="Profile completion status"
             >
-              <div className={`w-2 h-2 rounded-full ${formData.education ? 'bg-success' : 'bg-border'}`}></div>
-              <div className={`w-2 h-2 rounded-full ${formData.skills.length >= 3 ? 'bg-success' : 'bg-border'}`}></div>
-              <div className={`w-2 h-2 rounded-full ${formData.sector ? 'bg-success' : 'bg-border'}`}></div>
-              <div className={`w-2 h-2 rounded-full ${formData.location ? 'bg-success' : 'bg-border'}`}></div>
-              <span className="ml-2">
+              <div className={`w-3 h-3 rounded-full ${formData.education ? 'bg-green-500' : 'bg-gray-300'} transition-colors duration-200`}></div>
+              <div className={`w-3 h-3 rounded-full ${formData.skills.length >= 3 ? 'bg-green-500' : 'bg-gray-300'} transition-colors duration-200`}></div>
+              <div className={`w-3 h-3 rounded-full ${formData.sector ? 'bg-green-500' : 'bg-gray-300'} transition-colors duration-200`}></div>
+              <div className={`w-3 h-3 rounded-full ${formData.location ? 'bg-green-500' : 'bg-gray-300'} transition-colors duration-200`}></div>
+              <span className="ml-3 font-medium">
                 {completedCount}/4 {currentTranslations.completed}
               </span>
             </div>

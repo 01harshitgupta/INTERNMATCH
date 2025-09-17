@@ -155,7 +155,7 @@ const Home = () => {
                 </h4>
                 <p className="text-blue-800">
                   This is a verified and legitimate official portal of the
-                  Government of India, Ministry of Education.
+                  Government of India, Ministry of Corporate Affairs.
                 </p>
               </div>
             </div>
@@ -175,7 +175,7 @@ const Home = () => {
                 </div>
                 <span className="text-lg font-bold">Government of India</span>
               </div>
-              <p className="text-gray-400 text-sm">Ministry of Education</p>
+              <p className="text-gray-400 text-sm">Ministry of Corporate Affairs</p>
             </div>
             <nav aria-label="Quick links">
               <h5 className="sr-only">Quick links</h5>
@@ -219,9 +219,9 @@ const Home = () => {
             </nav>
             <address className="not-italic text-gray-400 text-sm">
               <h5 className="sr-only">Contact Info</h5>
-              <p>Ministry of Education</p>
+              <p>Ministry of Corporate Affairs</p>
               <p>Shastri Bhawan, New Delhi</p>
-              <p>Phone: +91-11-2378-1234</p>
+              <p>Phone No: 0120-4832500</p>
             </address>
           </div>
           <div className="border-t border-gray-800 py-4 text-center text-sm text-gray-400">

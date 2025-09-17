@@ -21,9 +21,9 @@ const FormActions = ({ onSubmit, isLoading, isValid }) => {
   const currentTranslations = translations[currentLanguage] || translations.en;
 
   return (
-    <div className="space-y-4" role="region" aria-label="Form Actions">
+    <div className="space-y-4 sm:space-y-6" role="region" aria-label="Form Actions">
       <div className="text-center">
-        <p className="text-sm text-muted-foreground mb-6" id="help-text">
+        <p className="text-sm text-gray-600 mb-6 font-medium" id="help-text">
           {currentTranslations.helpText}
         </p>
         <Button
@@ -36,23 +36,30 @@ const FormActions = ({ onSubmit, isLoading, isValid }) => {
           iconName="Search"
           iconPosition="left"
           fullWidth
-          className="text-lg py-4 min-h-14"
+          className="text-lg py-4 min-h-14 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
         >
-          {isLoading ? currentTranslations.loadingText : currentTranslations.submitButton}
+          {isLoading ? (
+            <div className="flex items-center justify-center">
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+              {currentTranslations.loadingText}
+            </div>
+          ) : (
+            currentTranslations.submitButton
+          )}
         </Button>
       </div>
-      <div className="flex items-center justify-center space-x-4 text-xs text-muted-foreground">
-        <div className="flex items-center space-x-1">
-          <div className="w-2 h-2 bg-success rounded-full" aria-hidden="true" />
-          <span>Free to use</span>
+      <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs text-gray-500">
+        <div className="flex items-center space-x-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full" aria-hidden="true" />
+          <span className="font-medium">Free to use</span>
         </div>
-        <div className="flex items-center space-x-1">
-          <div className="w-2 h-2 bg-primary rounded-full" aria-hidden="true" />
-          <span>Instant results</span>
+        <div className="flex items-center space-x-2">
+          <div className="w-2 h-2 bg-indigo-500 rounded-full" aria-hidden="true" />
+          <span className="font-medium">Instant results</span>
         </div>
-        <div className="flex items-center space-x-1">
-          <div className="w-2 h-2 bg-accent rounded-full" aria-hidden="true" />
-          <span>No registration required</span>
+        <div className="flex items-center space-x-2">
+          <div className="w-2 h-2 bg-purple-500 rounded-full" aria-hidden="true" />
+          <span className="font-medium">No registration required</span>
         </div>
       </div>
     </div>

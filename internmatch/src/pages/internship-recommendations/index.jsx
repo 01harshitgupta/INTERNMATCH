@@ -132,10 +132,10 @@ const InternshipRecommendationsContent = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       <Header />
       <ProgressIndicator />
-      <main className="pt-32 lg:pt-36">
+      <main className="pt-28 sm:pt-32 lg:pt-36">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-6">
           <Breadcrumb />
 
@@ -156,7 +156,7 @@ const InternshipRecommendationsContent = () => {
 
             <section className="flex-1">
               {/* Controls */}
-              <div className="flex items-center justify-between mb-6 p-4 bg-card rounded-lg border border-border">
+              <div className="flex items-center justify-between mb-6 p-4 bg-white/90 backdrop-blur-sm rounded-2xl border border-white/30 shadow-lg">
                 <div className="flex items-center gap-4">
                   <Button
                     variant="outline"
@@ -169,7 +169,7 @@ const InternshipRecommendationsContent = () => {
                     {t('showFilters')}
                   </Button>
 
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-sm text-gray-600">
                     {t('showing')} {filteredInternships.length} {t('of')} {mockInternships.length} {t('results')}
                   </div>
                 </div>
@@ -180,7 +180,7 @@ const InternshipRecommendationsContent = () => {
                     id="sortSelect"
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="text-sm bg-background border border-border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-primary min-h-44"
+                    className="text-sm bg-white border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 min-h-44 shadow-sm"
                   >
                     {sortOptions.map(option => (
                       <option key={option.value} value={option.value}>
