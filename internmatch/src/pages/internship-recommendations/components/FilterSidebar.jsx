@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../../components/ui/Header';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
@@ -7,6 +7,10 @@ import { Checkbox } from '../../../components/ui/Checkbox';
 const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange }) => {
   const { currentLanguage } = useLanguage();
   const [localFilters, setLocalFilters] = useState(filters);
+
+  useEffect(() => {
+    setLocalFilters(filters);
+  }, [filters]);
 
   const translations = {
     en: {
@@ -53,7 +57,7 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange }) => {
     }
   };
 
-  const getText = (key) => translations?.[currentLanguage]?.[key] || translations?.en?.[key];
+  const getText = (key) => translations[currentLanguage]?.[key] || translations.en[key];
 
   const stipendRanges = [
     { id: 'unpaid', label: getText('unpaid') },
@@ -76,21 +80,21 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange }) => {
   ];
 
   const sectors = [
-    'Technology', 'Marketing', 'Finance', 'Healthcare', 
+    'Technology', 'Marketing', 'Finance', 'Healthcare',
     'Education', 'Design', 'Sales', 'HR', 'Operations', 'Research'
   ];
 
   const locations = [
-    'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 
+    'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai',
     'Pune', 'Kolkata', 'Ahmedabad', 'Jaipur', 'Lucknow'
   ];
 
   const handleFilterChange = (category, value, checked) => {
     setLocalFilters(prev => ({
       ...prev,
-      [category]: checked 
+      [category]: checked
         ? [...(prev?.[category] || []), value]
-        : (prev?.[category] || [])?.filter(item => item !== value)
+        : (prev?.[category] || []).filter(item => item !== value)
     }));
   };
 
@@ -114,140 +118,122 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange }) => {
   return (
     <>
       {/* Mobile Overlay */}
-      <div 
+      <div
         className="fixed inset-0 bg-black/50 z-40 lg:hidden"
         onClick={onClose}
+        aria-hidden="true"
       />
       {/* Sidebar */}
-      <div className={`fixed lg:sticky top-0 right-0 lg:right-auto h-full lg:h-auto w-80 bg-card border-l lg:border-l-0 lg:border border-border z-50 lg:z-auto rounded-none lg:rounded-lg shadow-prominent lg:shadow-soft overflow-y-auto ${isOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'} transition-transform duration-300`}>
+      <aside
+        className={`fixed lg:sticky top-0 right-0 lg:right-auto h-full lg:h-auto w-80 bg-card border-l lg:border-l-0 lg:border border-border z-50 lg:z-auto rounded-none lg:rounded-lg shadow-prominent lg:shadow-soft overflow-y-auto transition-transform duration-300 ${
+          isOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'
+        }`}
+        aria-label={getText('filters')}
+        role="region"
+      >
         <div className="p-6">
           {/* Header */}
-          <div className="flex items-center justify-between mb-6">
+          <header className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <Icon name="Filter" size={20} />
+              <Icon name="Filter" size={20} aria-hidden="true" />
               {getText('filters')}
             </h2>
             <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleClearAll}
-                className="text-xs"
-              >
+              <Button variant="ghost" size="sm" onClick={handleClearAll} className="text-xs">
                 {getText('clearAll')}
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onClose}
-                className="lg:hidden"
-              >
-                <Icon name="X" size={16} />
+              <Button variant="ghost" size="sm" onClick={onClose} className="lg:hidden" aria-label="Close filter sidebar">
+                <Icon name="X" size={16} aria-hidden="true" />
               </Button>
             </div>
-          </div>
+          </header>
 
           {/* Stipend Range */}
-          <div className="mb-6">
-            <h3 className="text-sm font-medium text-foreground mb-3">
-              {getText('stipendRange')}
-            </h3>
+          <section className="mb-6" aria-label={getText('stipendRange')}>
+            <h3 className="text-sm font-medium text-foreground mb-3">{getText('stipendRange')}</h3>
             <div className="space-y-2">
-              {stipendRanges?.map(range => (
+              {stipendRanges.map(range => (
                 <Checkbox
-                  key={range?.id}
-                  label={range?.label}
-                  checked={localFilters?.stipendRange?.includes(range?.id) || false}
-                  onChange={(e) => handleFilterChange('stipendRange', range?.id, e?.target?.checked)}
+                  key={range.id}
+                  label={range.label}
+                  checked={localFilters?.stipendRange?.includes(range.id)}
+                  onChange={e => handleFilterChange('stipendRange', range.id, e.target.checked)}
                   size="sm"
                 />
               ))}
             </div>
-          </div>
+          </section>
 
           {/* Work Type */}
-          <div className="mb-6">
-            <h3 className="text-sm font-medium text-foreground mb-3">
-              {getText('workType')}
-            </h3>
+          <section className="mb-6" aria-label={getText('workType')}>
+            <h3 className="text-sm font-medium text-foreground mb-3">{getText('workType')}</h3>
             <div className="space-y-2">
-              {workTypes?.map(type => (
+              {workTypes.map(type => (
                 <Checkbox
-                  key={type?.id}
-                  label={type?.label}
-                  checked={localFilters?.workType?.includes(type?.id) || false}
-                  onChange={(e) => handleFilterChange('workType', type?.id, e?.target?.checked)}
+                  key={type.id}
+                  label={type.label}
+                  checked={localFilters?.workType?.includes(type.id)}
+                  onChange={e => handleFilterChange('workType', type.id, e.target.checked)}
                   size="sm"
                 />
               ))}
             </div>
-          </div>
+          </section>
 
           {/* Duration */}
-          <div className="mb-6">
-            <h3 className="text-sm font-medium text-foreground mb-3">
-              {getText('duration')}
-            </h3>
+          <section className="mb-6" aria-label={getText('duration')}>
+            <h3 className="text-sm font-medium text-foreground mb-3">{getText('duration')}</h3>
             <div className="space-y-2">
-              {durations?.map(duration => (
+              {durations.map(duration => (
                 <Checkbox
-                  key={duration?.id}
-                  label={duration?.label}
-                  checked={localFilters?.duration?.includes(duration?.id) || false}
-                  onChange={(e) => handleFilterChange('duration', duration?.id, e?.target?.checked)}
+                  key={duration.id}
+                  label={duration.label}
+                  checked={localFilters?.duration?.includes(duration.id)}
+                  onChange={e => handleFilterChange('duration', duration.id, e.target.checked)}
                   size="sm"
                 />
               ))}
             </div>
-          </div>
+          </section>
 
           {/* Sector */}
-          <div className="mb-6">
-            <h3 className="text-sm font-medium text-foreground mb-3">
-              {getText('sector')}
-            </h3>
+          <section className="mb-6" aria-label={getText('sector')}>
+            <h3 className="text-sm font-medium text-foreground mb-3">{getText('sector')}</h3>
             <div className="space-y-2 max-h-40 overflow-y-auto">
-              {sectors?.map(sector => (
+              {sectors.map(sector => (
                 <Checkbox
                   key={sector}
                   label={sector}
-                  checked={localFilters?.sector?.includes(sector) || false}
-                  onChange={(e) => handleFilterChange('sector', sector, e?.target?.checked)}
+                  checked={localFilters?.sector?.includes(sector)}
+                  onChange={e => handleFilterChange('sector', sector, e.target.checked)}
                   size="sm"
                 />
               ))}
             </div>
-          </div>
+          </section>
 
           {/* Location */}
-          <div className="mb-6">
-            <h3 className="text-sm font-medium text-foreground mb-3">
-              {getText('location')}
-            </h3>
+          <section className="mb-6" aria-label={getText('location')}>
+            <h3 className="text-sm font-medium text-foreground mb-3">{getText('location')}</h3>
             <div className="space-y-2 max-h-40 overflow-y-auto">
-              {locations?.map(location => (
+              {locations.map(location => (
                 <Checkbox
                   key={location}
                   label={location}
-                  checked={localFilters?.location?.includes(location) || false}
-                  onChange={(e) => handleFilterChange('location', location, e?.target?.checked)}
+                  checked={localFilters?.location?.includes(location)}
+                  onChange={e => handleFilterChange('location', location, e.target.checked)}
                   size="sm"
                 />
               ))}
             </div>
-          </div>
+          </section>
 
           {/* Apply Button */}
-          <Button
-            variant="default"
-            fullWidth
-            onClick={handleApply}
-            className="mt-6"
-          >
+          <Button variant="default" fullWidth onClick={handleApply} className="mt-6">
             {getText('apply')}
           </Button>
         </div>
-      </div>
+      </aside>
     </>
   );
 };

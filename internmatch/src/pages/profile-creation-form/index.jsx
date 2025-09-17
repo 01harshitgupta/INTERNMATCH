@@ -19,18 +19,11 @@ const ProfileCreationFormContent = () => {
     education: '',
     skills: [],
     sector: '',
-    location: ''
+    location: '',
   });
   const [errors, setErrors] = useState({});
 
-  // Load saved language preference on component mount
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('internmatch-language');
-    if (savedLanguage && savedLanguage !== currentLanguage) {
-      // Language will be handled by the LanguageProvider
-    }
-  }, [currentLanguage]);
-
+  // Translation strings with validation error messages
   const translations = {
     en: {
       pageTitle: 'Profile Creation - InternMatch',
@@ -38,8 +31,9 @@ const ProfileCreationFormContent = () => {
         education: 'Please select your education level',
         skills: 'Please select at least 3 skills',
         sector: 'Please select your preferred sector',
-        location: 'Please specify your location preference'
-      }
+        location: 'Please specify your location preference',
+      },
+      completed: 'completed',
     },
     hi: {
       pageTitle: 'प्रोफाइल निर्माण - इंटर्नमैच',
@@ -47,57 +41,53 @@ const ProfileCreationFormContent = () => {
         education: 'कृपया अपना शिक्षा स्तर चुनें',
         skills: 'कृपया कम से कम 3 कौशल चुनें',
         sector: 'कृपया अपना पसंदीदा क्षेत्र चुनें',
-        location: 'कृपया अपनी स्थान प्राथमिकता निर्दिष्ट करें'
-      }
-    }
+        location: 'कृपया अपनी स्थान प्राथमिकता निर्दिष्ट करें',
+      },
+      completed: 'पूरा हुआ',
+    },
   };
 
-  const currentTranslations = translations?.[currentLanguage] || translations?.en;
+  const currentTranslations = translations[currentLanguage] || translations.en;
 
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData?.education) {
-      newErrors.education = currentTranslations?.validationErrors?.education;
+    if (!formData.education) {
+      newErrors.education = currentTranslations.validationErrors.education;
     }
-
-    if (formData?.skills?.length < 3) {
-      newErrors.skills = currentTranslations?.validationErrors?.skills;
+    if (formData.skills.length < 3) {
+      newErrors.skills = currentTranslations.validationErrors.skills;
     }
-
-    if (!formData?.sector) {
-      newErrors.sector = currentTranslations?.validationErrors?.sector;
+    if (!formData.sector) {
+      newErrors.sector = currentTranslations.validationErrors.sector;
     }
-
-    if (!formData?.location || formData?.location?.trim() === '') {
-      newErrors.location = currentTranslations?.validationErrors?.location;
+    if (!formData.location || formData.location.trim() === '') {
+      newErrors.location = currentTranslations.validationErrors.location;
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors)?.length === 0;
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
     if (!validateForm()) {
-      // Scroll to first error
+      // Scroll to first error field smoothly
       const firstErrorElement = document.querySelector('[data-error="true"]');
       if (firstErrorElement) {
-        firstErrorElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
       return;
     }
 
     setIsLoading(true);
-
     try {
-      // Save profile data to localStorage for the matching algorithm
-      localStorage.setItem('internmatch-profile', JSON.stringify({
-        ...formData,
-        createdAt: new Date()?.toISOString(),
-        language: currentLanguage
-      }));
+      // Save profile data locally for matching algorithm
+      localStorage.setItem(
+        'internmatch-profile',
+        JSON.stringify({ ...formData, createdAt: new Date().toISOString(), language: currentLanguage })
+      );
 
-      // Simulate processing time
+      // Simulate delay
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Navigate to recommendations page
@@ -110,95 +100,82 @@ const ProfileCreationFormContent = () => {
   };
 
   const updateFormData = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setFormData(prev => ({ ...prev, [field]: value }));
 
-    // Clear error when user starts typing/selecting
-    if (errors?.[field]) {
-      setErrors(prev => ({
-        ...prev,
-        [field]: ''
-      }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
     }
   };
 
-  const isFormValid = () => {
-    return formData?.education && 
-           formData?.skills?.length >= 3 && 
-           formData?.sector && 
-           formData?.location && 
-           formData?.location?.trim() !== '';
-  };
+  const completedCount = [
+    formData.education ? 1 : 0,
+    formData.skills.length >= 3 ? 1 : 0,
+    formData.sector ? 1 : 0,
+    formData.location && formData.location.trim() !== '' ? 1 : 0,
+  ].reduce((a, b) => a + b, 0);
+
+  const isFormValid = completedCount === 4;
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Set page title */}
-      <title>{currentTranslations?.pageTitle}</title>
+      <title>{currentTranslations.pageTitle}</title>
       <Header />
       <ProgressIndicator />
-      <main className="pt-32 pb-16">
+      <main className="pt-32 pb-16" aria-label="Profile creation form">
         <div className="max-w-4xl mx-auto px-4 md:px-6">
           <Breadcrumb />
           <FormHeader />
-          
+
           <div className="bg-card border border-border rounded-lg shadow-soft p-6 md:p-8">
-            <form className="space-y-8" onSubmit={(e) => e?.preventDefault()}>
-              {/* Education Level */}
-              <div data-error={!!errors?.education}>
+            <form onSubmit={e => e.preventDefault()} className="space-y-8" noValidate>
+              <div data-error={!!errors.education}>
                 <EducationSelector
-                  value={formData?.education}
-                  onChange={(value) => updateFormData('education', value)}
-                  error={errors?.education}
+                  value={formData.education}
+                  onChange={value => updateFormData('education', value)}
+                  error={errors.education}
                 />
               </div>
 
-              {/* Skills Selection */}
-              <div data-error={!!errors?.skills}>
+              <div data-error={!!errors.skills}>
                 <SkillsSelector
-                  value={formData?.skills}
-                  onChange={(value) => updateFormData('skills', value)}
-                  error={errors?.skills}
+                  value={formData.skills}
+                  onChange={value => updateFormData('skills', value)}
+                  error={errors.skills}
                 />
               </div>
 
-              {/* Sector Preference */}
-              <div data-error={!!errors?.sector}>
+              <div data-error={!!errors.sector}>
                 <SectorSelector
-                  value={formData?.sector}
-                  onChange={(value) => updateFormData('sector', value)}
-                  error={errors?.sector}
+                  value={formData.sector}
+                  onChange={value => updateFormData('sector', value)}
+                  error={errors.sector}
                 />
               </div>
 
-              {/* Location Preference */}
-              <div data-error={!!errors?.location}>
+              <div data-error={!!errors.location}>
                 <LocationSelector
-                  value={formData?.location}
-                  onChange={(value) => updateFormData('location', value)}
-                  error={errors?.location}
+                  value={formData.location}
+                  onChange={value => updateFormData('location', value)}
+                  error={errors.location}
                 />
               </div>
 
-              {/* Form Actions */}
-              <FormActions
-                onSubmit={handleSubmit}
-                isLoading={isLoading}
-                isValid={isFormValid()}
-              />
+              <FormActions onSubmit={handleSubmit} isLoading={isLoading} isValid={isFormValid} />
             </form>
           </div>
 
           {/* Progress Summary */}
           <div className="mt-8 text-center">
-            <div className="inline-flex items-center space-x-2 text-sm text-muted-foreground bg-muted/50 px-4 py-2 rounded-full">
-              <div className={`w-2 h-2 rounded-full ${formData?.education ? 'bg-success' : 'bg-border'}`}></div>
-              <div className={`w-2 h-2 rounded-full ${formData?.skills?.length >= 3 ? 'bg-success' : 'bg-border'}`}></div>
-              <div className={`w-2 h-2 rounded-full ${formData?.sector ? 'bg-success' : 'bg-border'}`}></div>
-              <div className={`w-2 h-2 rounded-full ${formData?.location ? 'bg-success' : 'bg-border'}`}></div>
+            <div
+              className="inline-flex items-center space-x-2 text-sm text-muted-foreground bg-muted/50 px-4 py-2 rounded-full"
+              aria-label="Profile completion status"
+            >
+              <div className={`w-2 h-2 rounded-full ${formData.education ? 'bg-success' : 'bg-border'}`}></div>
+              <div className={`w-2 h-2 rounded-full ${formData.skills.length >= 3 ? 'bg-success' : 'bg-border'}`}></div>
+              <div className={`w-2 h-2 rounded-full ${formData.sector ? 'bg-success' : 'bg-border'}`}></div>
+              <div className={`w-2 h-2 rounded-full ${formData.location ? 'bg-success' : 'bg-border'}`}></div>
               <span className="ml-2">
-                {[formData?.education, formData?.skills?.length >= 3, formData?.sector, formData?.location]?.filter(Boolean)?.length}/4 completed
+                {completedCount}/4 {currentTranslations.completed}
               </span>
             </div>
           </div>
@@ -208,12 +185,10 @@ const ProfileCreationFormContent = () => {
   );
 };
 
-const ProfileCreationForm = () => {
-  return (
-    <LanguageProvider>
-      <ProfileCreationFormContent />
-    </LanguageProvider>
-  );
-};
+const ProfileCreationForm = () => (
+  <LanguageProvider>
+    <ProfileCreationFormContent />
+  </LanguageProvider>
+);
 
 export default ProfileCreationForm;

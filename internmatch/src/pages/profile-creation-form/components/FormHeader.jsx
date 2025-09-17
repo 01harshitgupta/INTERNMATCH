@@ -1,49 +1,51 @@
 import React from 'react';
+import { useId } from 'react';
 import { useLanguage } from '../../../components/ui/Header';
 import { useAuth } from '../../../contexts/AuthContext';
 import Icon from '../../../components/AppIcon';
 
 const FormHeader = () => {
-  const { currentLanguage } = useLanguage();
+  const { currentLanguage, t } = useLanguage();
   const { user } = useAuth();
+  const headerId = useId();
 
   const translations = {
     en: {
       title: 'Create Your Profile',
       subtitle: 'Tell us about yourself to find the perfect internship matches',
-      description: 'Complete your profile to get personalized internship recommendations based on your skills, education, and preferences.'
+      description:
+        'Complete your profile to get personalized internship recommendations based on your skills, education, and preferences.',
+      greeting: 'Hello'
     },
     hi: {
-      title: 'अपना प्रोफाइल बनाएं',
+      title: 'अपना प्रोफ़ाइल बनाएं',
       subtitle: 'सही इंटर्नशिप मैच खोजने के लिए हमें अपने बारे में बताएं',
-      description: 'अपने कौशल, शिक्षा और प्राथमिकताओं के आधार पर व्यक्तिगत इंटर्नशिप सिफारिशें प्राप्त करने के लिए अपना प्रोफाइल पूरा करें।'
+      description:
+        'अपने कौशल, शिक्षा और प्राथमिकताओं के आधार पर व्यक्तिगत इंटर्नशिप सिफारिशें प्राप्त करें।',
+      greeting: 'नमस्ते'
     }
   };
 
-  const currentTranslations = translations?.[currentLanguage] || translations?.en;
+  const currentStrings = translations[currentLanguage] || translations.en;
 
   return (
-    <div className="text-center mb-8">
+    <header className="text-center mb-8" aria-labelledby={headerId}>
       <div className="flex justify-center mb-4">
-        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-          <Icon name="UserPlus" size={32} color="var(--color-primary)" />
+        <div className="w-16 h-16 bg-primary/10 flex items-center justify-center rounded-full">
+          <Icon name="UserPlus" size={32} color="var(--color-primary)" aria-hidden="true" />
         </div>
       </div>
-      <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
-        {currentTranslations?.title}
+      <h1 id={headerId} className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+        {currentStrings.title}
       </h1>
       {user?.name && (
         <p className="text-base text-muted-foreground mb-2">
-          {currentLanguage === 'hi' ? 'नमस्ते' : 'Hello'}, <span className="font-semibold">{user.name}</span>
+          {currentStrings.greeting}, <span className="font-semibold">{user.name}</span>
         </p>
       )}
-      <p className="text-lg text-muted-foreground mb-4">
-        {currentTranslations?.subtitle}
-      </p>
-      <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-        {currentTranslations?.description}
-      </p>
-    </div>
+      <p className="text-lg text-muted-foreground">{currentStrings.subtitle}</p>
+      <p className="text-sm text-muted-foreground max-w-2xl mx-auto mt-2">{currentStrings.description}</p>
+    </header>
   );
 };
 

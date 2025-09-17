@@ -13,24 +13,24 @@ const ProgressIndicator = () => {
       id: 'profile-setup',
       path: '/profile-creation-form',
       title: t('profileSetup'),
-      icon: 'User'
+      icon: 'User',
     },
     {
       id: 'matches',
       path: '/internship-recommendations',
       title: t('yourMatches'),
-      icon: 'Heart'
-    }
+      icon: 'Heart',
+    },
   ];
 
-  const currentStepIndex = steps?.findIndex(step => step?.path === location?.pathname);
+  const currentStepIndex = steps.findIndex(step => step.path === location.pathname);
+
   const isCompleted = (stepIndex) => stepIndex < currentStepIndex;
   const isCurrent = (stepIndex) => stepIndex === currentStepIndex;
 
   const handleStepClick = (step, stepIndex) => {
-    // Allow navigation to previous steps or current step
     if (stepIndex <= currentStepIndex) {
-      navigate(step?.path);
+      navigate(step.path);
     }
   };
 
@@ -38,13 +38,13 @@ const ProgressIndicator = () => {
     <div className="bg-card border-b border-border">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
         <div className="flex items-center justify-between">
-          {steps?.map((step, index) => (
-            <div key={step?.id} className="flex items-center flex-1">
-              {/* Step Circle */}
+          {steps.map((step, index) => (
+            <div key={step.id} className="flex items-center flex-1" aria-current={isCurrent(index) ? 'step' : undefined}>
               <button
                 onClick={() => handleStepClick(step, index)}
                 disabled={index > currentStepIndex}
-                className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-smooth min-h-44 ${
+                aria-disabled={index > currentStepIndex}
+                className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors duration-200 min-h-44 ${
                   isCompleted(index)
                     ? 'bg-success border-success text-success-foreground cursor-pointer hover:bg-success/90'
                     : isCurrent(index)
@@ -53,9 +53,9 @@ const ProgressIndicator = () => {
                 }`}
               >
                 {isCompleted(index) ? (
-                  <Icon name="Check" size={16} strokeWidth={2.5} />
+                  <Icon name="Check" size={16} strokeWidth={2.5} aria-hidden="true" />
                 ) : (
-                  <Icon name={step?.icon} size={16} strokeWidth={2} />
+                  <Icon name={step.icon} size={16} strokeWidth={2} aria-hidden="true" />
                 )}
               </button>
 
@@ -64,49 +64,51 @@ const ProgressIndicator = () => {
                 <button
                   onClick={() => handleStepClick(step, index)}
                   disabled={index > currentStepIndex}
-                  className={`text-left transition-smooth ${
-                    index <= currentStepIndex
-                      ? 'cursor-pointer hover:text-primary' :'cursor-not-allowed'
+                  aria-disabled={index > currentStepIndex}
+                  className={`text-left transition-colors duration-200 ${
+                    index <= currentStepIndex ? 'cursor-pointer hover:text-primary' : 'cursor-not-allowed'
                   }`}
                 >
-                  <p className={`text-sm font-medium ${
-                    isCompleted(index)
-                      ? 'text-success'
-                      : isCurrent(index)
-                      ? 'text-primary' :'text-muted-foreground'
-                  }`}>
-                    {step?.title}
+                  <p
+                    className={`text-sm font-medium ${
+                      isCompleted(index) ? 'text-success' : isCurrent(index) ? 'text-primary' : 'text-muted-foreground'
+                    }`}
+                  >
+                    {step.title}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {isCompleted(index) 
-                      ? 'Completed' 
-                      : isCurrent(index) 
-                      ? 'Current' :'Pending'
-                    }
+                    {isCompleted(index) ? 'Completed' : isCurrent(index) ? 'Current' : 'Pending'}
                   </p>
                 </button>
               </div>
 
               {/* Connector Line */}
-              {index < steps?.length - 1 && (
-                <div className={`hidden sm:block w-full h-0.5 mx-4 ${
-                  isCompleted(index) ? 'bg-success' : 'bg-border'
-                }`} />
+              {index < steps.length - 1 && (
+                <div
+                  className={`hidden sm:block w-full h-0.5 mx-4 ${
+                    isCompleted(index) ? 'bg-success' : 'bg-border'
+                  }`}
+                  aria-hidden="true"
+                />
               )}
             </div>
           ))}
         </div>
 
         {/* Mobile Progress Bar */}
-        <div className="sm:hidden mt-4">
+        <div className="sm:hidden mt-4" aria-label="Progress">
           <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-            <span>Step {currentStepIndex + 1} of {steps?.length}</span>
-            <span>{Math.round(((currentStepIndex + 1) / steps?.length) * 100)}%</span>
+            <span>Step {currentStepIndex + 1} of {steps.length}</span>
+            <span>{Math.round(((currentStepIndex + 1) / steps.length) * 100)}%</span>
           </div>
           <div className="w-full bg-muted rounded-full h-2">
-            <div 
+            <div
               className="bg-primary h-2 rounded-full transition-all duration-300 ease-out"
-              style={{ width: `${((currentStepIndex + 1) / steps?.length) * 100}%` }}
+              style={{ width: `${((currentStepIndex + 1) / steps.length) * 100}%` }}
+              aria-valuenow={currentStepIndex + 1}
+              aria-valuemin={1}
+              aria-valuemax={steps.length}
+              role="progressbar"
             />
           </div>
         </div>

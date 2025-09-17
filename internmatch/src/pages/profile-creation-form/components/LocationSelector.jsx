@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useId } from 'react';
 import { useLanguage } from '../../../components/ui/Header';
 import Select from '../../../components/ui/Select';
 import Input from '../../../components/ui/Input';
 import Icon from '../../../components/AppIcon';
 
 const LocationSelector = ({ value, onChange, error }) => {
-  const { currentLanguage } = useLanguage();
+  const { currentLanguage, t } = useLanguage();
   const [inputMode, setInputMode] = useState('dropdown');
+  const selectId = useId();
 
   const cityOptions = {
     en: [
@@ -31,7 +32,7 @@ const LocationSelector = ({ value, onChange, error }) => {
       { value: 'patna', label: 'Patna', description: 'Bihar' },
       { value: 'vadodara', label: 'Vadodara', description: 'Gujarat' },
       { value: 'remote', label: 'Remote/Work from Home', description: 'Any location' },
-      { value: 'other', label: 'Other Location', description: 'Specify manually' }
+      { value: 'other', label: 'Other', description: 'Specify manually' }
     ],
     hi: [
       { value: 'mumbai', label: 'मुंबई', description: 'महाराष्ट्र' },
@@ -55,7 +56,7 @@ const LocationSelector = ({ value, onChange, error }) => {
       { value: 'patna', label: 'पटना', description: 'बिहार' },
       { value: 'vadodara', label: 'वडोदरा', description: 'गुजरात' },
       { value: 'remote', label: 'रिमोट/घर से काम', description: 'कोई भी स्थान' },
-      { value: 'other', label: 'अन्य स्थान', description: 'मैन्युअल रूप से निर्दिष्ट करें' }
+      { value: 'other', label: 'अन्य', description: 'मैन्युअल रूप से दर्ज करें' }
     ]
   };
 
@@ -63,83 +64,75 @@ const LocationSelector = ({ value, onChange, error }) => {
     en: {
       title: 'Location Preference',
       description: 'Where would you like to work?',
-      placeholder: 'Select your preferred location',
-      customPlaceholder: 'Enter your city/location',
-      switchToCustom: 'Enter custom location',
+      placeholder: 'Select your location',
+      customPlaceholder: 'Enter your location',
+      switchToCustom: 'Enter manually',
       switchToDropdown: 'Choose from list'
     },
     hi: {
-      title: 'स्थान प्राथमिकता',
-      description: 'आप कहाँ काम करना चाहेंगे?',
-      placeholder: 'अपना पसंदीदा स्थान चुनें',
-      customPlaceholder: 'अपना शहर/स्थान दर्ज करें',
-      switchToCustom: 'कस्टम स्थान दर्ज करें',
+      title: 'स्थान की प्राथमिकता',
+      description: 'आप कहाँ काम करना पसंद करेंगे?',
+      placeholder: 'अपना स्थान चुनें',
+      customPlaceholder: 'अपना स्थान दर्ज करें',
+      switchToCustom: 'मैन्युअल रूप से दर्ज करें',
       switchToDropdown: 'सूची से चुनें'
     }
   };
 
-  const currentTranslations = translations?.[currentLanguage] || translations?.en;
-  const options = cityOptions?.[currentLanguage] || cityOptions?.en;
+  const currentOptions = cityOptions[currentLanguage] || cityOptions.en;
+  const currentStrings = translations[currentLanguage] || translations.en;
 
-  const handleLocationChange = (newValue) => {
-    if (newValue === 'other') {
-      setInputMode('custom');
+  const [mode, setMode] = useState('dropdown');
+
+  // Initialize 'mode' if value corresponds to 'other' or any other state
+  useEffect(() => {
+    if (value === 'other' || !currentOptions.some(opt => opt.value === value)) {
+      setMode('custom');
+    } else {
+      setMode('dropdown');
+    }
+  }, [value, currentOptions]);
+
+  const handleValueChange = val => {
+    if (val === 'other') {
+      setMode('custom');
       onChange('');
     } else {
-      onChange(newValue);
+      onChange(val);
     }
   };
 
-  const handleCustomLocationChange = (e) => {
-    onChange(e?.target?.value);
-  };
-
-  const switchToDropdown = () => {
-    setInputMode('dropdown');
-    onChange('');
-  };
-
-  const switchToCustom = () => {
-    setInputMode('custom');
-    onChange('');
-  };
-
   return (
-    <div className="space-y-2">
-      <div className="flex items-center space-x-3 mb-4">
-        <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
-          <Icon name="MapPin" size={20} color="var(--color-success)" />
+    <div className="space-y-4">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 bg-success/10 flex items-center justify-center rounded-lg">
+          <Icon name="MapPin" size={20} color="var(--color-success)" aria-hidden="true" />
         </div>
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold text-foreground">
-            {currentTranslations?.title}
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            {currentTranslations?.description}
-          </p>
+        <div>
+          <h3 className="text-lg font-semibold text-foreground">{currentStrings.title}</h3>
+          <p className="text-sm text-muted-foreground">{currentStrings.description}</p>
         </div>
         <button
           type="button"
-          onClick={inputMode === 'dropdown' ? switchToCustom : switchToDropdown}
-          className="text-xs text-primary hover:text-primary/80 transition-smooth px-2 py-1 rounded min-h-44 flex items-center space-x-1"
+          className="text-xs text-primary hover:text-primary/80 transition col-auto px-2 py-1 rounded"
+          onClick={() => setMode(prev => (prev === 'dropdown' ? 'custom' : 'dropdown'))}
+          aria-label={mode === 'dropdown' ? currentStrings.switchToCustom : currentStrings.switchToDropdown}
         >
-          <Icon name={inputMode === 'dropdown' ? 'Edit3' : 'List'} size={14} />
-          <span>
-            {inputMode === 'dropdown' 
-              ? currentTranslations?.switchToCustom 
-              : currentTranslations?.switchToDropdown
-            }
+          <Icon name={mode === 'dropdown' ? 'Edit3' : 'List'} size={14} />
+          <span className="sr-only">
+            {mode === 'dropdown' ? currentStrings.switchToCustom : currentStrings.switchToDropdown}
           </span>
         </button>
       </div>
-      {inputMode === 'dropdown' ? (
+
+      {mode === 'dropdown' ? (
         <Select
-          options={options}
+          id={currentStrings.title.toLowerCase().replace(/\s+/g, '-') + '-select'}
+          options={currentOptions}
           value={value}
-          onChange={handleLocationChange}
-          placeholder={currentTranslations?.placeholder}
+          onChange={handleValueChange}
+          placeholder={currentStrings.placeholder}
           error={error}
-          required
           searchable
           className="w-full"
         />
@@ -147,10 +140,9 @@ const LocationSelector = ({ value, onChange, error }) => {
         <Input
           type="text"
           value={value}
-          onChange={handleCustomLocationChange}
-          placeholder={currentTranslations?.customPlaceholder}
+          onChange={e => onChange(e.target.value)}
+          placeholder={currentStrings.customPlaceholder}
           error={error}
-          required
           className="w-full"
         />
       )}
