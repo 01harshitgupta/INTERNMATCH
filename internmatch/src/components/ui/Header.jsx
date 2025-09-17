@@ -111,7 +111,7 @@ const Header = () => {
                 ? 'text-blue-600 bg-blue-50 border border-blue-200' :'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
             }`}
           >
-            Profile Setup
+            {t('profileSetup')}
           </button>
           <button
             onClick={() => navigate('/internship-recommendations')}
@@ -119,7 +119,7 @@ const Header = () => {
               location?.pathname === '/internship-recommendations' ?'text-blue-600 bg-blue-50 border border-blue-200' :'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
             }`}
           >
-            Internship Matches
+            {t('yourMatches')}
           </button>
         </nav>
 

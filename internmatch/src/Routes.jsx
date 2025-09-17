@@ -5,6 +5,7 @@ import ErrorBoundary from "components/ErrorBoundary";
 import ProtectedRoute from "components/ProtectedRoute";
 import NotFound from "pages/NotFound";
 import Login from "pages/Login";
+import Signup from "pages/Signup";
 import Home from "pages/Home";
 import InternshipRecommendations from './pages/internship-recommendations';
 import ProfileCreationForm from './pages/profile-creation-form';
@@ -17,6 +18,7 @@ const Routes = () => {
       <RouterRoutes>
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         
         {/* Protected routes */}
         <Route path="/" element={

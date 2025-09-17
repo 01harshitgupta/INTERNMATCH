@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Icon from '../components/AppIcon';
@@ -11,33 +12,31 @@ const Login = () => {
   const [error, setError] = useState('');
   
   const navigate = useNavigate();
+  const { login: authLogin } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    // Simple hardcoded credentials for demo
-    if (username === 'admin' && password === 'admin123') {
-      // Create user data
-      const userData = {
-        id: '1',
-        username: 'admin',
-        name: 'Administrator',
-        role: 'Government Official'
-      };
-
-      // Store user data
-      localStorage.setItem('token', 'demo-token-123');
-      localStorage.setItem('user', JSON.stringify(userData));
-      
-      // Navigate to main app
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: username, password })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Login failed');
+      }
+      // Notify AuthContext so ProtectedRoute recognizes authentication
+      authLogin(data.user, data.token);
       navigate('/');
-    } else {
-      setError('Invalid username or password');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
 
   return (
@@ -115,14 +114,9 @@ const Login = () => {
           </Button>
         </form>
 
-        <div className="mt-8 text-center">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <h3 className="text-sm font-semibold text-blue-900 mb-2">Demo Credentials</h3>
-            <p className="text-xs text-blue-700">
-              Username: <span className="font-mono bg-blue-100 px-1 rounded">admin</span><br/>
-              Password: <span className="font-mono bg-blue-100 px-1 rounded">admin123</span>
-            </p>
-          </div>
+        <div className="mt-8 text-center text-sm text-gray-600">
+          First time here?{' '}
+          <Link to="/signup" className="text-blue-700 font-semibold hover:underline">Create an account</Link>
         </div>
 
         <div className="mt-6 text-center">

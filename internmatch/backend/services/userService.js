@@ -42,6 +42,7 @@ class UserService {
       const newUser = {
         id: userData.id,
         phoneNumber: userData.phoneNumber,
+        email: userData.email,
         name: userData.name,
         createdAt: userData.createdAt,
         updatedAt: new Date().toISOString()
@@ -133,6 +134,16 @@ class UserService {
     } catch (error) {
       console.error('Get all users error:', error);
       return [];
+    }
+  }
+
+  async findUserByEmail(email) {
+    try {
+      const users = await this.loadUsers();
+      return users.find(user => (user.email || '').toLowerCase() === String(email || '').toLowerCase());
+    } catch (error) {
+      console.error('Find user by email error:', error);
+      return null;
     }
   }
 }

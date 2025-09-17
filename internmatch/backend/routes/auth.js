@@ -4,38 +4,97 @@ const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const authService = require('../services/authService');
 const userService = require('../services/userService');
+const credentialService = require('../services/credentialService');
 
 const router = express.Router();
 
 // Rate limiting for auth endpoints
-const authLimiter = require('express-rate-limit')({
+const rateLimit = require('express-rate-limit');
+const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 requests per windowMs
-  message: 'Too many authentication attempts, please try again later.'
+  max: process.env.NODE_ENV === 'development' ? 1000 : 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many authentication attempts, please try again later.' },
+  skip: () => process.env.NODE_ENV === 'development'
 });
 
-// Send OTP to email
-router.post('/send-otp', authLimiter, async (req, res) => {
+// Signup (first-time user) - username, email, password
+router.post('/signup', authLimiter, async (req, res) => {
   try {
-    const { email } = req.body;
+    const { username, email, password, name } = req.body;
 
-    if (!email) {
-      return res.status(400).json({ error: 'Email is required' });
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
     }
 
-    const result = await authService.sendOTP(email);
-    
-    if (result.success) {
-      res.json({ 
-        message: 'OTP sent successfully',
-        sessionId: result.sessionId 
+    // Create user profile (if not exists)
+    let user = await userService.findUserByEmail(email) || await userService.findUserByPhone(username);
+    if (!user) {
+      user = await userService.createUser({
+        id: require('uuid').v4(),
+        phoneNumber: undefined,
+        name: name || username,
+        email: email || undefined,
+        createdAt: new Date().toISOString()
       });
-    } else {
-      res.status(400).json({ error: result.error });
     }
+
+    // Create credentials
+    await credentialService.createCredential({
+      userId: user.id,
+      username,
+      email,
+      passwordPlain: password
+    });
+
+    res.status(201).json({ message: 'Signup successful' });
   } catch (error) {
-    console.error('Send OTP error:', error);
-    res.status(500).json({ error: 'Failed to send OTP' });
+    console.error('Signup error:', error);
+    res.status(400).json({ error: error.message || 'Signup failed' });
+  }
+});
+
+// Login - username/email + password
+router.post('/login', authLimiter, async (req, res) => {
+  try {
+    const { identifier, password } = req.body; // identifier can be username or email
+
+    if (!identifier || !password) {
+      return res.status(400).json({ error: 'Identifier and password are required' });
+    }
+
+    const cred = await credentialService.verifyPassword(identifier, password);
+    if (!cred) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Load user profile
+    const user = await userService.findUserById(cred.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user.id, username: cred.username, email: cred.email || null },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.json({
+      message: 'Login successful',
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email || null,
+        username: cred.username
+      }
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Login failed' });
   }
 });
 

@@ -1,9 +1,11 @@
 import React from 'react';
 import { useLanguage } from '../../../components/ui/Header';
+import { useAuth } from '../../../contexts/AuthContext';
 import Icon from '../../../components/AppIcon';
 
 const FormHeader = () => {
   const { currentLanguage } = useLanguage();
+  const { user } = useAuth();
 
   const translations = {
     en: {
@@ -30,6 +32,11 @@ const FormHeader = () => {
       <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
         {currentTranslations?.title}
       </h1>
+      {user?.name && (
+        <p className="text-base text-muted-foreground mb-2">
+          {currentLanguage === 'hi' ? 'नमस्ते' : 'Hello'}, <span className="font-semibold">{user.name}</span>
+        </p>
+      )}
       <p className="text-lg text-muted-foreground mb-4">
         {currentTranslations?.subtitle}
       </p>
