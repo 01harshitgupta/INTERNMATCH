@@ -30,12 +30,12 @@ const FormHeader = () => {
 
   return (
     <header
-      className="text-center mb-6 pt-1"
+      className="text-center mb-8 pt-1"
       aria-labelledby={headerId}
     >
       {/* Icon */}
-      <div className="flex justify-center mb-3">
-        <div className="w-14 h-14 bg-primary/10 flex items-center justify-center rounded-full">
+      <div className="flex justify-center mb-1">
+        <div className="w-14 h-10 bg-primary/10 flex items-center justify-center rounded-full">
           <Icon
             name="UserPlus"
             size={28}
