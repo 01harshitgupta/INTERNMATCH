@@ -1,4 +1,7 @@
+#To start the app: uvicorn main:app --reload
+
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
@@ -30,6 +33,14 @@ app = FastAPI(
     title="Internship Recommendation API",
     description="An API that recommends internships based on candidate skills.",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],  # Add the URL of your frontend
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
 )
 
 try:
