@@ -273,7 +273,7 @@ const Header = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <div className="md:hidden border-t border-border bg-card" role="navigation" aria-label="Mobile Navigation">
+      <div className="md:hidden border-t border-border bg-card flex" role="navigation" aria-label="Mobile Navigation">
         <button
           onClick={() => navigate('/profile-creation-form')}
           className={`flex-1 flex flex-col items-center py-3 text-xs font-medium transition-colors min-h-44 ${

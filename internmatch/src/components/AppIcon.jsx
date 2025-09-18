@@ -44,11 +44,4 @@ Icon.propTypes = {
   strokeWidth: PropTypes.number,
 };
 
-Icon.defaultProps = {
-  size: 24,
-  color: 'currentColor',
-  className: '',
-  strokeWidth: 2,
-};
-
 export default Icon;

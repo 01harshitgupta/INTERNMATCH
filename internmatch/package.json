@@ -7,13 +7,14 @@
       "@dhiwise/component-tagger",
       "react",
       "react-dom",
+      "vite",
       "@reduxjs/toolkit",
       "redux",
       "react-router-dom"
     ],
     "devDependencies": [
       "@vitejs/plugin-react",
-      "vite",
+      
       "vite-tsconfig-paths",
       "tailwindcss",
       "autoprefixer",

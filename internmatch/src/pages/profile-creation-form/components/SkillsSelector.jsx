@@ -116,7 +116,9 @@ const SkillsSelector = ({ value, onChange, error }) => {
   };
 
   const handleSelectAll = () => {
-    const allSkillIds = categories.flatMap(category => category.skills.map(skill => skill.id));
+    const allSkillIds = categories.flatMap(category =>
+      category.skills.map(skill => skill.id)
+    );
     onChange(allSkillIds);
   };
 
@@ -125,50 +127,65 @@ const SkillsSelector = ({ value, onChange, error }) => {
   };
 
   return (
-    <section aria-labelledby={`${groupId}-label`} className="space-y-6">
-      <div className="flex justify-between items-center mb-4">
+    <section aria-labelledby={`${groupId}-label`} className="space-y-8">
+      {/* Header */}
+      <div className="flex justify-between items-center">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-secondary/10 flex items-center justify-center rounded-lg">
-            <Icon name="Zap" size={20} aria-hidden="true" />
+          <div className="w-12 h-12 bg-blue-100 flex items-center justify-center rounded-xl">
+            <Icon name="Zap" size={22} aria-hidden="true" className="text-blue-600" />
           </div>
           <div>
-            <h3 id={`${groupId}-label`} className="text-lg font-semibold text-foreground">{currentStrings.title}</h3>
-            <p className="text-sm text-muted-foreground">{currentStrings.description}</p>
+            <h3 id={`${groupId}-label`} className="text-xl font-semibold text-gray-900">
+              {currentStrings.title}
+            </h3>
+            <p className="text-sm text-gray-600">{currentStrings.description}</p>
           </div>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex space-x-3">
           <button
             type="button"
             onClick={handleSelectAll}
-            className="text-xs text-primary hover:text-primary/80 px-2 py-1 rounded"
+            className="text-sm font-medium text-blue-600 hover:text-blue-800"
           >
             {currentStrings.selectAll}
           </button>
           <button
             type="button"
             onClick={handleClearAll}
-            className="text-xs text-muted-foreground hover:text-foreground px-2 py-1 rounded"
+            className="text-sm font-medium text-gray-500 hover:text-gray-700"
           >
             {currentStrings.clearAll}
           </button>
         </div>
       </div>
-      {error && <div className="text-sm text-error bg-error/10 p-3 rounded">{error}</div>}
-      {categories.map((category, idx) => (
-        <div key={category.category} className="bg-card border border-border p-4 rounded mb-6">
-          <div className="flex items-center space-x-2 mb-4">
-            <Icon name={category.icon} size={18} aria-hidden="true" />
-            <h4 className="font-medium text-foreground">{category.category}</h4>
+
+      {/* Error message */}
+      {error && (
+        <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md">
+          {error}
+        </div>
+      )}
+
+      {/* Skill Categories */}
+      {categories.map(category => (
+        <div
+          key={category.category}
+          className="bg-white border border-gray-200 shadow-sm p-6 rounded-lg space-y-4"
+        >
+          <div className="flex items-center space-x-2">
+            <Icon name={category.icon} size={20} className="text-gray-700" />
+            <h4 className="text-lg font-medium text-gray-900">{category.category}</h4>
           </div>
+
           <CheckboxGroup>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {category.skills.map(skill => (
                 <Checkbox
                   key={skill.id}
                   label={skill.label}
                   checked={value.includes(skill.id)}
                   onChange={e => handleSkillChange(skill.id, e.target.checked)}
-                  className="text-sm"
+                  className="text-base font-normal"
                 />
               ))}
             </div>
