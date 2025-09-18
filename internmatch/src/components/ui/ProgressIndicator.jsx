@@ -23,7 +23,9 @@ const ProgressIndicator = () => {
     },
   ];
 
-  const currentStepIndex = steps.findIndex(step => step.path === location.pathname);
+  const currentStepIndex = steps.findIndex(
+    (step) => step.path === location.pathname
+  );
 
   const isCompleted = (stepIndex) => stepIndex < currentStepIndex;
   const isCurrent = (stepIndex) => stepIndex === currentStepIndex;
@@ -35,60 +37,61 @@ const ProgressIndicator = () => {
   };
 
   return (
-    <div className="bg-card border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
+    <div className="bg-white shadow-md border-b border-gray-200">
+      <div className="max-w-5xl mx-auto px-4 md:px-6 py-4">
         <div className="flex items-center justify-between">
           {steps.map((step, index) => (
-            <div key={step.id} className="flex items-center flex-1" aria-current={isCurrent(index) ? 'step' : undefined}>
+            <div
+              key={step.id}
+              className="flex items-center flex-1"
+              aria-current={isCurrent(index) ? 'step' : undefined}
+            >
+              {/* Step Circle */}
               <button
                 onClick={() => handleStepClick(step, index)}
                 disabled={index > currentStepIndex}
                 aria-disabled={index > currentStepIndex}
-                className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors duration-200 min-h-44 ${
-                  isCompleted(index)
-                    ? 'bg-success border-success text-success-foreground cursor-pointer hover:bg-success/90'
-                    : isCurrent(index)
-                    ? 'bg-primary border-primary text-primary-foreground cursor-pointer'
-                    : 'bg-muted border-border text-muted-foreground cursor-not-allowed'
-                }`}
+                className={`flex items-center justify-center w-14 h-14 rounded-full border-4 transition-all duration-300
+                  ${
+                    isCompleted(index)
+                      ? 'bg-green-500 border-green-500 text-white'
+                      : isCurrent(index)
+                      ? 'bg-blue-600 border-blue-600 text-white shadow-lg scale-110 ring-4 ring-blue-200'
+                      : 'bg-gray-200 border-gray-300 text-gray-500'
+                  }`}
               >
                 {isCompleted(index) ? (
-                  <Icon name="Check" size={16} strokeWidth={2.5} aria-hidden="true" />
+                  <Icon name="Check" size={22} strokeWidth={2.5} />
                 ) : (
-                  <Icon name={step.icon} size={16} strokeWidth={2} aria-hidden="true" />
+                  <Icon name={step.icon} size={22} strokeWidth={2} />
                 )}
               </button>
 
               {/* Step Label */}
-              <div className="ml-3 flex-1">
-                <button
-                  onClick={() => handleStepClick(step, index)}
-                  disabled={index > currentStepIndex}
-                  aria-disabled={index > currentStepIndex}
-                  className={`text-left transition-colors duration-200 ${
-                    index <= currentStepIndex ? 'cursor-pointer hover:text-primary' : 'cursor-not-allowed'
+              <div className="ml-3">
+                <p
+                  className={`text-base font-bold ${
+                    isCompleted(index)
+                      ? 'text-green-600'
+                      : isCurrent(index)
+                      ? 'text-blue-600'
+                      : 'text-gray-500'
                   }`}
                 >
-                  <p
-                    className={`text-sm font-medium ${
-                      isCompleted(index) ? 'text-success' : isCurrent(index) ? 'text-primary' : 'text-muted-foreground'
-                    }`}
-                  >
-                    {step.title}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {isCompleted(index) ? 'Completed' : isCurrent(index) ? 'Current' : 'Pending'}
-                  </p>
-                </button>
+                  {step.title}
+                </p>
               </div>
 
               {/* Connector Line */}
               {index < steps.length - 1 && (
                 <div
-                  className={`hidden sm:block w-full h-0.5 mx-4 ${
-                    isCompleted(index) ? 'bg-success' : 'bg-border'
+                  className={`hidden sm:block w-full h-1.5 mx-4 rounded-full ${
+                    isCompleted(index)
+                      ? 'bg-green-500'
+                      : isCurrent(index)
+                      ? 'bg-blue-300'
+                      : 'bg-gray-300'
                   }`}
-                  aria-hidden="true"
                 />
               )}
             </div>
@@ -97,14 +100,20 @@ const ProgressIndicator = () => {
 
         {/* Mobile Progress Bar */}
         <div className="sm:hidden mt-4" aria-label="Progress">
-          <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-            <span>Step {currentStepIndex + 1} of {steps.length}</span>
-            <span>{Math.round(((currentStepIndex + 1) / steps.length) * 100)}%</span>
+          <div className="flex items-center justify-between text-sm text-gray-600 mb-2 font-medium">
+            <span>
+              Step {currentStepIndex + 1} of {steps.length}
+            </span>
+            <span>
+              {Math.round(((currentStepIndex + 1) / steps.length) * 100)}%
+            </span>
           </div>
-          <div className="w-full bg-muted rounded-full h-2">
+          <div className="w-full bg-gray-200 rounded-full h-3">
             <div
-              className="bg-primary h-2 rounded-full transition-all duration-300 ease-out"
-              style={{ width: `${((currentStepIndex + 1) / steps.length) * 100}%` }}
+              className="bg-blue-600 h-3 rounded-full transition-all duration-500 ease-out"
+              style={{
+                width: `${((currentStepIndex + 1) / steps.length) * 100}%`,
+              }}
               aria-valuenow={currentStepIndex + 1}
               aria-valuemin={1}
               aria-valuemax={steps.length}
