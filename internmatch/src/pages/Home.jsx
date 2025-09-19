@@ -10,11 +10,11 @@ const Home = () => {
   const features = [
     {
       icon: "User",
-      title: "Profile Setup",
+      title: "AI-Powered Career Pathway",
       description:
-        "Create your professional profile to get matched with relevant internships",
-      action: "Setup Profile",
-      path: "/profile-creation-form"
+        "Get personalized internship recommendations based on your skills and location",
+      action: "Start Career Pathway",
+      path: "/career-pathway"
     },
     {
       icon: "Search",
@@ -25,10 +25,10 @@ const Home = () => {
     },
     {
       icon: "FileText",
-      title: "Track Applications",
-      description: "Monitor application status and manage submissions",
-      action: "View Applications",
-      path: "/applications"
+      title: "Profile Setup",
+      description: "Create your professional profile for better matches",
+      action: "Setup Profile",
+      path: "/profile-creation-form"
     }
   ];
 
@@ -58,11 +58,11 @@ const Home = () => {
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button
-                onClick={() => navigate("/profile-creation-form")}
+                onClick={() => navigate("/career-pathway")}
                 className="bg-white text-blue-600 hover:bg-gray-100"
-                aria-label="Go to profile setup"
+                aria-label="Start AI-powered career pathway"
               >
-                Get Started
+                Start Career Pathway
               </Button>
               <Button
                 onClick={() => navigate("/internship-recommendations")}

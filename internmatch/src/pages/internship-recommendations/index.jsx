@@ -107,7 +107,7 @@ const InternshipRecommendationsContent = () => {
   }, [filters, sortBy]);
 
   const handleRefineSearch = () => {
-    navigate('/profile-creation-form');
+    navigate('/career-pathway');
   };
 
   const handleApply = (internship) => {

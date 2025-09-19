@@ -9,6 +9,7 @@ import Signup from "pages/Signup";
 import Home from "pages/Home";
 import InternshipRecommendations from "./pages/internship-recommendations";
 import ProfileCreationForm from "./pages/profile-creation-form";
+import CareerPathway from "./pages/CareerPathway";
 
 const Routes = () => {
   return (
@@ -43,6 +44,14 @@ const Routes = () => {
             element={
               <ProtectedRoute>
                 <ProfileCreationForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/career-pathway"
+            element={
+              <ProtectedRoute>
+                <CareerPathway />
               </ProtectedRoute>
             }
           />
