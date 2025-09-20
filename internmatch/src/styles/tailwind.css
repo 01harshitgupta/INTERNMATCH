@@ -7,37 +7,37 @@
 @layer base {
   :root {
     /* Core Colors */
-    --color-background: #FAFAFA; /* gray-50 */
-    --color-foreground: #1F2937; /* gray-800 */
-    --color-border: rgba(0, 0, 0, 0.1); /* black-10 */
-    --color-input: #FFFFFF; /* white */
-    --color-ring: #2563EB; /* blue-600 */
-    
-    /* Card Colors */
-    --color-card: #FFFFFF; /* white */
-    --color-card-foreground: #1F2937; /* gray-800 */
-    --color-popover: #FFFFFF; /* white */
-    --color-popover-foreground: #1F2937; /* gray-800 */
-    
-    /* Muted Colors */
-    --color-muted: #F3F4F6; /* gray-100 */
-    --color-muted-foreground: #6B7280; /* gray-500 */
-    
-    /* Primary Colors */
-    --color-primary: #2563EB; /* blue-600 */
-    --color-primary-foreground: #FFFFFF; /* white */
-    
-    /* Secondary Colors */
-    --color-secondary: #059669; /* emerald-600 */
-    --color-secondary-foreground: #FFFFFF; /* white */
-    
-    /* Accent Colors */
-    --color-accent: #EA580C; /* orange-600 */
-    --color-accent-foreground: #FFFFFF; /* white */
-    
-    /* Status Colors */
-    --color-success: #10B981; /* emerald-500 */
-    --color-success-foreground: #FFFFFF; /* white */
+  --color-background: #f8fafc; /* soft blue-gray */
+  --color-foreground: #1e293b; /* slate-800 */
+  --color-border: #e0e7ef; /* light blue border */
+  --color-input: #fff; /* white */
+  --color-ring: #a5b4fc; /* soft indigo */
+
+  /* Card Colors */
+  --color-card: #fff; /* white */
+  --color-card-foreground: #1e293b; /* slate-800 */
+  --color-popover: #fff; /* white */
+  --color-popover-foreground: #1e293b; /* slate-800 */
+
+  /* Muted Colors */
+  --color-muted: #f1f5f9; /* blue-50 */
+  --color-muted-foreground: #64748b; /* slate-400 */
+
+  /* Primary Colors */
+  --color-primary: #6366f1; /* indigo-500 */
+  --color-primary-foreground: #fff; /* white */
+
+  /* Secondary Colors */
+  --color-secondary: #f472b6; /* pink-400 */
+  --color-secondary-foreground: #fff; /* white */
+
+  /* Accent Colors */
+  --color-accent: #fbbf24; /* yellow-400 */
+  --color-accent-foreground: #fff; /* white */
+
+  /* Status Colors */
+  --color-success: #34d399; /* green-400 */
+  --color-success-foreground: #fff; /* white */
     
     --color-warning: #F59E0B; /* amber-500 */
     --color-warning-foreground: #FFFFFF; /* white */

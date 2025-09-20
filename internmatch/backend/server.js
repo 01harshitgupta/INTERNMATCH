@@ -9,8 +9,11 @@ if (!process.env.JWT_SECRET) {
   process.env.JWT_SECRET = 'internmatch_jwt_secret_key_2024_secure_development';
 }
 
+
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
+const recommendRoutes = require('./routes/recommend');
+const chatRoutes = require('./routes/chat');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -41,6 +44,8 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/recommend', recommendRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

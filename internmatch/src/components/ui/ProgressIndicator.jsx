@@ -98,29 +98,7 @@ const ProgressIndicator = () => {
           ))}
         </div>
 
-        {/* Mobile Progress Bar */}
-        <div className="sm:hidden mt-4" aria-label="Progress">
-          <div className="flex items-center justify-between text-sm text-gray-600 mb-2 font-medium">
-            <span>
-              Step {currentStepIndex + 1} of {steps.length}
-            </span>
-            <span>
-              {Math.round(((currentStepIndex + 1) / steps.length) * 100)}%
-            </span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-3">
-            <div
-              className="bg-blue-600 h-3 rounded-full transition-all duration-500 ease-out"
-              style={{
-                width: `${((currentStepIndex + 1) / steps.length) * 100}%`,
-              }}
-              aria-valuenow={currentStepIndex + 1}
-              aria-valuemin={1}
-              aria-valuemax={steps.length}
-              role="progressbar"
-            />
-          </div>
-        </div>
+        {/* Mobile Progress Bar removed as requested */}
       </div>
     </div>
   );

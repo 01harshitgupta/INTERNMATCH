@@ -105,11 +105,11 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b-2 border-blue-600 shadow-lg">
-      <div className="flex items-center justify-between h-16 px-4 md:px-6 max-w-7xl mx-auto">
+  <header className="fixed top-0 left-0 w-full bg-white/98 border-b border-gray-200 shadow-md z-50 py-4 px-8 flex flex-col backdrop-blur-lg">
+  <div className="flex items-center justify-between h-20 px-2 md:px-6 max-w-7xl mx-auto">
         {/* Government Logo */}
         <div
-          className="flex items-center cursor-pointer transition-opacity hover:opacity-80"
+          className="flex items-center cursor-pointer transition-opacity hover:opacity-90"
           onClick={handleLogoClick}
           role="button"
           tabIndex={0}
@@ -117,26 +117,26 @@ const Header = () => {
           aria-label="Go to home page"
         >
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-600 rounded flex items-center justify-center" aria-hidden="true">
-              <Icon name="Shield" size={24} color="white" strokeWidth={2} />
+            <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center shadow-md" aria-hidden="true">
+              <Icon name="Shield" size={28} color="white" strokeWidth={2} />
             </div>
             <div>
-              <span className="text-lg font-bold text-blue-900">
+              <span className="text-xl font-extrabold text-gray-900 tracking-tight">
                 Government of India
               </span>
-              <p className="text-xs text-blue-700">Ministry of Corporate Affairs</p>
+              <p className="text-xs text-blue-600 font-medium mt-0.5">Ministry of Corporate Affairs</p>
             </div>
           </div>
         </div>
 
         {/* Navigation - Desktop */}
-        <nav className="hidden md:flex items-center space-x-8" aria-label="Primary">
+  <nav className="hidden md:flex items-center space-x-8 ml-8" aria-label="Primary">
           <button
             onClick={() => navigate('/profile-creation-form')}
-            className={`text-sm font-semibold transition-colors px-4 py-2 rounded-md ${
+            className={`text-base font-semibold transition-colors px-4 py-2 rounded-md ${
               location?.pathname === '/profile-creation-form'
-                ? 'text-blue-600 bg-blue-50 border border-blue-200'
-                : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                ? 'text-blue-700 bg-blue-100 border border-blue-200 shadow-sm'
+                : 'text-gray-700 hover:text-blue-700 hover:bg-blue-50'
             }`}
             aria-current={location?.pathname === '/profile-creation-form' ? 'page' : undefined}
           >
@@ -144,14 +144,25 @@ const Header = () => {
           </button>
           <button
             onClick={() => navigate('/internship-recommendations')}
-            className={`text-sm font-semibold transition-colors px-4 py-2 rounded-md ${
+            className={`text-base font-semibold transition-colors px-4 py-2 rounded-md ${
               location?.pathname === '/internship-recommendations'
-                ? 'text-blue-600 bg-blue-50 border border-blue-200'
-                : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                ? 'text-blue-700 bg-blue-100 border border-blue-200 shadow-sm'
+                : 'text-gray-700 hover:text-blue-700 hover:bg-blue-50'
             }`}
             aria-current={location?.pathname === '/internship-recommendations' ? 'page' : undefined}
           >
             {t('yourMatches')}
+          </button>
+          <button
+            onClick={() => navigate('/chatbot')}
+            className={`text-base font-semibold transition-colors px-4 py-2 rounded-md ${
+              location?.pathname === '/chatbot'
+                ? 'text-blue-700 bg-blue-100 border border-blue-200 shadow-sm'
+                : 'text-gray-700 hover:text-blue-700 hover:bg-blue-50'
+            }`}
+            aria-current={location?.pathname === '/chatbot' ? 'page' : undefined}
+          >
+            Help
           </button>
         </nav>
 

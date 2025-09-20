@@ -74,8 +74,16 @@ const InternshipCard = ({ internship, onApply }) => {
     return 'text-accent bg-accent/10';
   };
 
+  // Defensive defaults for missing backend fields
+  const locationType = internship.locationType || 'Hybrid';
+  const requiredSkills = Array.isArray(internship.requiredSkills) ? internship.requiredSkills : [];
+  const duration = internship.duration || 1;
+  const deadline = internship.deadline ? new Date(internship.deadline) : new Date();
+  const applicants = internship.applicants || 0;
+  const postedDaysAgo = internship.postedDaysAgo || 0;
+
   return (
-    <article className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/30 p-6 shadow-xl hover:shadow-2xl transition-shadow" tabIndex={0} aria-label={`${internship.role} at ${internship.company}`}>
+    <article className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/30 p-6 shadow-xl hover:shadow-2xl transition-shadow" tabIndex={0} aria-label={`${internship.role || ''} at ${internship.company || ''}`}>  
       {/* Header */}
       <header className="flex items-start justify-between mb-4">
         <div className="flex-1">
@@ -98,12 +106,12 @@ const InternshipCard = ({ internship, onApply }) => {
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
         {/* Location */}
           <div className="flex items-center gap-2">
-          <Icon name={getLocationTypeIcon(internship.locationType)} size={16} className="text-muted-foreground" aria-hidden="true"/>
-          <div>
-            <p className="text-sm font-medium text-foreground">{getText('location')}</p>
-            <p className="text-xs text-muted-foreground">{internship.location} • {getText(internship.locationType.toLowerCase())}</p>
+            <Icon name={getLocationTypeIcon(locationType)} size={16} className="text-muted-foreground" aria-hidden="true"/>
+            <div>
+              <p className="text-sm font-medium text-foreground">{getText('location')}</p>
+              <p className="text-xs text-muted-foreground">{internship.location || ''} • {getText((locationType || '').toLowerCase())}</p>
+            </div>
           </div>
-        </div>
 
         {/* Stipend */}
         <div className="flex items-center gap-2">
@@ -119,7 +127,7 @@ const InternshipCard = ({ internship, onApply }) => {
           <Icon name="Calendar" size={16} className="text-muted-foreground" aria-hidden="true"/>
           <div>
             <p className="text-sm font-medium text-foreground">{getText('duration')}</p>
-            <p className="text-xs text-muted-foreground">{internship.duration} {getText('months')}</p>
+            <p className="text-xs text-muted-foreground">{duration} {getText('months')}</p>
           </div>
         </div>
 
@@ -129,7 +137,7 @@ const InternshipCard = ({ internship, onApply }) => {
           <div>
             <p className="text-sm font-medium text-foreground">Deadline</p>
             <p className="text-xs text-muted-foreground">
-              {new Date(internship.deadline).toLocaleDateString(currentLanguage === 'hi' ? 'hi-IN' : 'en-IN', {
+              {deadline.toLocaleDateString(currentLanguage === 'hi' ? 'hi-IN' : 'en-IN', {
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric',
@@ -146,14 +154,14 @@ const InternshipCard = ({ internship, onApply }) => {
           {getText('requiredSkills')}
         </p>
         <div className="flex flex-wrap gap-2 mt-2">
-          {internship.requiredSkills.slice(0, 6).map((skill, idx) => (
+          {requiredSkills.slice(0, 6).map((skill, idx) => (
             <span key={idx} className="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs rounded border border-indigo-100">
               {skill}
             </span>
           ))}
-          {internship.requiredSkills.length > 6 && (
+          {requiredSkills.length > 6 && (
             <span className="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded border border-purple-100">
-              +{internship.requiredSkills.length - 6} more
+              +{requiredSkills.length - 6} more
             </span>
           )}
         </div>
@@ -166,10 +174,10 @@ const InternshipCard = ({ internship, onApply }) => {
       <footer className="flex items-center justify-between pt-4 border-t border-white/30">
         <div className="text-xs text-muted-foreground flex gap-4">
           <span className="flex items-center gap-1">
-            <Icon name="Users" size={12} aria-hidden="true" /> {internship.applicants} applied
+            <Icon name="Users" size={12} aria-hidden="true" /> {applicants} applied
           </span>
           <span className="flex items-center gap-1">
-            <Icon name="Eye" size={12} aria-hidden="true" /> Posted {internship.postedDaysAgo} days ago
+            <Icon name="Eye" size={12} aria-hidden="true" /> Posted {postedDaysAgo} days ago
           </span>
         </div>
         <Button

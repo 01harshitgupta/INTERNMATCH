@@ -9,6 +9,8 @@ import Signup from "pages/Signup";
 import Home from "pages/Home";
 import InternshipRecommendations from "./pages/internship-recommendations";
 import ProfileCreationForm from "./pages/profile-creation-form";
+import Chatbot from "./components/Chatbot";
+
 
 const Routes = () => {
   return (
@@ -17,6 +19,7 @@ const Routes = () => {
         {/* ScrollToTop ensures window scrolls to top on route change */}
         <ScrollToTop />
         <RouterRoutes>
+          <Route path="/chatbot" element={<Chatbot />} />
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

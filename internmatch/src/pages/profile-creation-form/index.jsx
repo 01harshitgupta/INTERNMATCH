@@ -4,6 +4,7 @@ import { LanguageProvider, useLanguage } from '../../components/ui/Header';
 import Header from '../../components/ui/Header';
 import ProgressIndicator from '../../components/ui/ProgressIndicator';
 import Breadcrumb from '../../components/ui/Breadcrumb';
+import { Typewriter } from 'react-simple-typewriter';
 import FormHeader from './components/FormHeader';
 import EducationSelector from './components/EducationSelector';
 import SkillsSelector from './components/SkillsSelector';
@@ -117,22 +118,50 @@ const ProfileCreationFormContent = () => {
   const isFormValid = completedCount === 4;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+  <div className="min-h-screen  bg-gradient-to-br from-[#ff6f61] via-[#fffbe7] to-[#2ecc40]">
       <title>{currentTranslations.pageTitle}</title>
       <Header />
-      <ProgressIndicator />
-      <main className="pt-20 sm:pt-24 pb-8 sm:pb-16" aria-label="Profile creation form">
+      <div className="bottom-auto left-0 w-full z-40 flex justify-center pointer-events-none">
+        <div className="bg-white/90 shadow-lg rounded-t-xl px-4 py-1 mt-1 mb-0 flex items-center gap-2 border-t border-gray-200 max-w-xl w-full mx-auto pointer-events-auto">
+          <ProgressIndicator small />
+        </div>
+      </div>
+  <main className="pt-16 sm:pt-20 pb-8 sm:pb-16" aria-label="Profile creation form">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb />
-          <FormHeader />
-
-          <div className="bg-white/95 backdrop-blur-sm border border-white/20 rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#b06ab3] mb-2 drop-shadow-lg">
+              <Typewriter
+                words={["Create Your Profile"]}
+                loop={1}
+                cursor
+                cursorStyle="|"
+                typeSpeed={60}
+                deleteSpeed={0}
+                delaySpeed={1000}
+              />
+            </h1>
+            <p className="text-lg text-[#4b2e83]">
+              <Typewriter
+                words={["Tell us about your education, skills, and interests to get the best internship matches!"]}
+                loop={1}
+                cursor
+                cursorStyle="|"
+                typeSpeed={40}
+                deleteSpeed={0}
+                delaySpeed={1200}
+              />
+            </p>
+          </div>
+          <div className="bg-white/95 backdrop-blur-sm border border-white/20 rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 mt-2">
             <form onSubmit={e => e.preventDefault()} className="space-y-6 sm:space-y-8" noValidate>
               <div data-error={!!errors.education}>
                 <EducationSelector
                   value={formData.education}
                   onChange={value => updateFormData('education', value)}
                   error={errors.education}
+                  searchable={true}
+                  clearable={true}
                 />
               </div>
 

@@ -2,11 +2,24 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Inter', sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  min-height: 100vh;
+  letter-spacing: 0.01em;
 }
 
 * {
   box-sizing: border-box;
-  line-height: normal;
+  line-height: 1.6;
   font-family: inherit;
   margin: 0;
+}
+
+a {
+  color: #6366f1;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: #f472b6;
 }

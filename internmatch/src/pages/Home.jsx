@@ -1,4 +1,5 @@
 import React from "react";
+import { Typewriter } from 'react-simple-typewriter';
 import { useNavigate } from "react-router-dom";
 import Header from "../components/ui/Header";
 import Button from "../components/ui/Button";
@@ -40,21 +41,41 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+  <div className="relative min-h-screen w-full overflow-x-hidden">
+    {/* Full-page animated gradient background */}
+    <div className="fixed inset-0 z-0 bg-gradient-to-br from-[#ff6f61] via-[#fffbe7] to-[#2ecc40]" aria-hidden="true"></div>
+    {/* Subtle overlay for text clarity */}
+    <div className="fixed inset-0 z-10 bg-white/60 backdrop-blur-sm pointer-events-none" aria-hidden="true"></div>
+    <div className="relative z-20">
       <Header />
       <main role="main" tabIndex={-1} aria-label="Homepage">
         {/* Hero Section */}
         <section
           aria-label="Hero banner"
-          className="pt-20 bg-gradient-to-br from-blue-600 to-blue-800 text-white"
+          className="pt-20 text-center text-gray-900 drop-shadow-lg"
         >
-          <div className="max-w-7xl mx-auto px-4 py-20 text-center">
+          <div className="max-w-7xl mx-auto px-4 py-20">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Government Internship Portal
+              <Typewriter
+                words={["Government Internship Portal"]}
+                loop={1}
+                cursor
+                cursorStyle="|"
+                typeSpeed={60}
+                deleteSpeed={0}
+                delaySpeed={1000}
+              />
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-blue-100">
-              Connect with meaningful internship opportunities across Government
-              of India
+            <p className="text-xl md:text-2xl mb-8 text-gray-800">
+              <Typewriter
+                words={["Connect with meaningful internship opportunities across Government of India"]}
+                loop={1}
+                cursor
+                cursorStyle="|"
+                typeSpeed={40}
+                deleteSpeed={0}
+                delaySpeed={1200}
+              />
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button
@@ -67,7 +88,7 @@ const Home = () => {
               <Button
                 onClick={() => navigate("/internship-recommendations")}
                 variant="outline"
-                className="border-2 border-white text-white hover:bg-white hover:text-blue-600"
+                className="border-2 bg-white border-white text-blue-600 hover:bg-gray-100 hover:text-blue-600"
                 aria-label="Browse internship opportunities"
               >
                 Browse Opportunities
@@ -76,8 +97,8 @@ const Home = () => {
           </div>
         </section>
 
-        {/* Stats Section */}
-        <section aria-label="Platform statistics" className="bg-white py-16">
+  {/* Stats Section */}
+  <section aria-label="Platform statistics" className="py-16">
           <div className="max-w-7xl mx-auto px-4">
             <dl className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               {stats.map(({ label, value }) => (
@@ -95,7 +116,7 @@ const Home = () => {
         {/* Features Section */}
         <section
           aria-label="How the portal works"
-          className="bg-gray-50 py-16"
+          className="py-16"
         >
           <header className="mb-12 text-center">
             <h2 className="text-3xl font-bold text-gray-900">
@@ -119,6 +140,7 @@ const Home = () => {
                     name={icon}
                     className="w-6 h-6 text-blue-600"
                     aria-hidden="true"
+
                   />
                 </div>
                 <h3 id={`feature-title-${idx}`} className="text-xl font-semibold mb-3">
@@ -139,7 +161,7 @@ const Home = () => {
         {/* Government Notice */}
         <section
           aria-label="Official government notice"
-          className="bg-blue-50 border-t border-blue-200 py-8"
+          className="border-t border-blue-200 py-8 bg-transparent"
         >
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex items-start space-x-4">
@@ -162,8 +184,8 @@ const Home = () => {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="bg-gray-900 text-white">
+  {/* Footer */}
+  <footer className="bg-gray-900 text-white">
           <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 py-12">
             <div>
               <div className="flex items-center space-x-2 mb-4">
@@ -230,6 +252,7 @@ const Home = () => {
         </footer>
       </main>
     </div>
+  </div>
   );
 };
 
