@@ -158,7 +158,7 @@ const InternshipRecommendationsContent = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-yellow-100 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-[#ff6f61] via-[#fffbe7] to-[#2ecc40]">
       <Header />
       <ProgressIndicator />
       <main className="pt-28 sm:pt-32 lg:pt-36">
